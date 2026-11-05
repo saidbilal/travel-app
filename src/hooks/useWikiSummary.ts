@@ -31,6 +31,8 @@ export function useWikiSummary(title: string | undefined) {
     })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
       .then((j) => {
+        // A disambiguation page means the title was ambiguous: better no photo than a wrong one.
+        if (j.type === 'disambiguation') throw new Error('disambiguation');
         const thumb: string | undefined = j.thumbnail?.source;
         // Ask for a sharper thumbnail for high-DPI phones; fall back to the original thumb if that size fails.
         const sharper = thumb?.replace(/\/(\d+)px-/, '/800px-');

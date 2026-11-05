@@ -102,7 +102,7 @@ export default function App() {
     const pos = geo.position;
     if (!pos) return;
     if (inCityArea(pos.lat, pos.lng)) {
-      mapRef.current?.flyTo(pos.lng, pos.lat, 15.5);
+      mapRef.current?.flyTo(pos.lng, pos.lat, 15);
     } else {
       const d = distanceMeters(pos, { lat: city.center[1], lng: city.center[0] });
       setToast(`You’re ${formatDistance(d)} from ${city.name}. Your blue dot will appear once you’re here.`);

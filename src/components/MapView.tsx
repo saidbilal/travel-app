@@ -46,8 +46,8 @@ function byZoomTier(f: (scale: number, tier: Tier) => number): ExpressionSpecifi
 }
 
 const TEXT_SIZE: Record<Tier, number> = { 1: 13.5, 2: 12.5, 3: 11.5 };
-/** Name labels appear from these zoom levels. */
-const LABEL_MINZOOM: Record<Tier, number> = { 1: 0, 2: 13.8, 3: 15.2 };
+/** Name labels appear from these zoom levels (whole numbers: layout values are evaluated per tile zoom). */
+const LABEL_MINZOOM: Record<Tier, number> = { 1: 0, 2: 14, 3: 15 };
 
 const PLACE_LAYERS = ['places-selected', 'places-1', 'places-2', 'places-3'];
 type Pad = { top: number; bottom: number; left: number; right: number };
@@ -341,7 +341,7 @@ export const MapView = forwardRef<MapViewHandle, Props>(function MapView({ city,
   useImperativeHandle(
     ref,
     () => ({
-      flyTo(lng, lat, zoom = 15.5) {
+      flyTo(lng, lat, zoom = 15) {
         mapRef.current?.flyTo({ center: [lng, lat], zoom, offset: paddingToOffset(overviewPadding()), duration: 900 });
       },
       fitCity() {

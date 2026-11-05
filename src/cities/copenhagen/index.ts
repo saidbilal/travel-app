@@ -322,7 +322,7 @@ const places: Place[] = [
     tip: 'Try open-faced smørrebrød and a cinnamon swirl. Busy at weekend lunchtimes.',
     duration: '45 min',
     cost: 'free',
-    wiki: 'Torvehallerne',
+    wiki: 'Torvehallerne KBH',
   },
   {
     id: 'botanical-garden',
@@ -436,7 +436,6 @@ const places: Place[] = [
     tip: 'Mostly open from spring to autumn. Take the harbour bus to get there.',
     duration: '1–2 hours',
     cost: 'free',
-    wiki: 'Reffen',
   },
   {
     id: 'copenhill',
@@ -468,7 +467,7 @@ const places: Place[] = [
       'Copenhagen’s oldest royal garden, laid out around Rosenborg Castle in the 1600s. Tree-lined avenues, rose beds, a Hans Christian Andersen statue and lawns full of picnickers in summer.',
     duration: '30–60 min',
     cost: 'free',
-    wiki: "King's Garden",
+    wiki: 'Rosenborg Castle Gardens',
   },
   {
     id: 'blue-planet',
@@ -585,7 +584,7 @@ const places: Place[] = [
     tip: 'Lifeguards are on duty in summer. Bring a towel and join the locals on a sunny afternoon.',
     duration: '1–2 hours',
     cost: 'free',
-    wiki: 'Islands Brygge Harbour Bath',
+    wiki: 'Islands Brygge',
   },
   {
     id: 'queen-louise-bridge',
@@ -601,7 +600,7 @@ const places: Place[] = [
       'The bridge between the inner city and Nørrebro across the Lakes. On sunny evenings it turns into the city’s favourite hangout, with people sitting along the edges watching the sunset.',
     duration: '15–30 min',
     cost: 'free',
-    wiki: "Queen Louise's Bridge",
+    wiki: 'Queen Louise Bridge',
   },
   {
     id: 'circle-bridge',
@@ -711,7 +710,6 @@ const places: Place[] = [
       'A short, characterful street in Nørrebro packed with coffee roasters, ceramic studios, vintage shops and small restaurants. Right next to Assistens Cemetery.',
     duration: '45 min',
     cost: 'free',
-    wiki: 'Jægersborggade',
   },
   {
     id: 'amager-strand',
@@ -744,7 +742,6 @@ const places: Place[] = [
     tip: 'Combine with Reffen street food next door.',
     duration: '1–1.5 hours',
     cost: 'paid',
-    wiki: 'Copenhagen Contemporary',
   },
   {
     id: 'david-collection',
@@ -826,7 +823,7 @@ const places: Place[] = [
       'Exhibitions on architecture and design inside BLOX, a glass building by OMA stacked over a busy road on the harbourfront.',
     duration: '1 hour',
     cost: 'paid',
-    wiki: 'BLOX (building)',
+    wiki: 'BLOX',
   },
   {
     id: 'holmens-church',
@@ -873,7 +870,6 @@ const places: Place[] = [
       'The 1901 gateway of the Carlsberg brewery, carried by four life-size granite elephants. The surrounding Carlsberg City district mixes historic brewery buildings with new architecture.',
     duration: '20–30 min',
     cost: 'free',
-    wiki: 'Elephant Gate',
   },
   {
     id: 'charlottenborg',
@@ -888,7 +884,7 @@ const places: Place[] = [
       'Contemporary art exhibitions in the baroque Charlottenborg Palace, home of the Royal Danish Academy of Fine Arts, at the head of Nyhavn.',
     duration: '45 min',
     cost: 'paid',
-    wiki: 'Kunsthal Charlottenborg',
+    wiki: 'Charlottenborg Palace',
   },
   {
     id: 'nikolaj',
@@ -903,7 +899,7 @@ const places: Place[] = [
       'A contemporary art space inside the former St. Nicholas Church, whose tall green spire is a landmark just off Strøget.',
     duration: '30–45 min',
     cost: 'paid',
-    wiki: 'Nikolaj Kunsthal',
+    wiki: 'St. Nicholas Church, Copenhagen',
   },
   {
     id: 'museum-of-copenhagen',
@@ -951,7 +947,7 @@ const places: Place[] = [
     tip: 'Great rainy-day option with kids.',
     duration: '3 hours',
     cost: 'paid',
-    wiki: 'Experimentarium',
+    wiki: 'Experimentarium (Copenhagen)',
   },
   {
     id: 'nyboder',
