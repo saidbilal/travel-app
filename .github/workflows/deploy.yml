@@ -2,7 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main, master]
+    # The app's branch is currently the repo's default branch, so deploy from it too.
+    branches: [main, master, claude/copenhagen-sights-map]
   workflow_dispatch:
 
 permissions:
