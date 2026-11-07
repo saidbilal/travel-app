@@ -12,6 +12,7 @@ export type CategoryId =
   | 'nature'
   | 'neighborhoods'
   | 'food'
+  | 'shopping'
   | 'fun';
 
 export type IconId =
@@ -59,7 +60,19 @@ export type IconId =
   | 'music'
   | 'cablecar'
   | 'skyscraper'
-  | 'modern';
+  | 'modern'
+  | 'wine'
+  | 'gift'
+  | 'candle'
+  | 'sweets'
+  | 'nuts'
+  | 'soap'
+  | 'magic'
+  | 'ceramics'
+  | 'shoes';
+
+/** Extra, overlapping interests (a tapas bar is also in Food & Markets). */
+export type TagId = 'tapas' | 'souvenirs';
 
 export type Cost = 'free' | 'paid' | 'mixed';
 
@@ -71,6 +84,8 @@ export interface Place {
   tier: Tier;
   category: CategoryId;
   icon: IconId;
+  /** Extra interests this place also counts for */
+  tags?: TagId[];
   lat: number;
   lng: number;
   /** Neighbourhood / district */

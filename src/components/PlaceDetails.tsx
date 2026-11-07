@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BookOpen, Clock, ExternalLink, Footprints, Lightbulb, MapPin, Navigation, Ticket, X } from 'lucide-react';
 import type { Cost, Place } from '../types';
-import { CATEGORY_BY_ID, TIER_BY_ID } from '../categories';
+import { CATEGORY_BY_ID, TAG_BY_ID, TIER_BY_ID } from '../categories';
 import { PlaceIcon } from '../icons';
 import { useWikiSummary } from '../hooks/useWikiSummary';
 import { directionsUrl, distanceMeters, formatDistance, formatWalk, placeUrl } from '../lib/geo';
@@ -68,6 +68,15 @@ export function PlaceDetails({ place, cityName, userPosition }: Props) {
           <PlaceIcon icon={cat.icon} size={14} />
           {cat.label}
         </span>
+        {place.tags?.map((t) => {
+          const tag = TAG_BY_ID[t];
+          return (
+            <span key={t} className="tag-badge" style={{ ['--c' as string]: tag.color }}>
+              <PlaceIcon icon={tag.icon} size={13} />
+              {tag.label}
+            </span>
+          );
+        })}
       </div>
 
       <h2 className="details__title">{place.name}</h2>

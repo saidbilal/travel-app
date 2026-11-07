@@ -1147,3 +1147,26 @@ h3 {
     pointer-events: auto;
   }
 }
+
+.catfilter__section {
+  margin: 4px 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 13px;
+  font-size: 12.5px;
+  font-weight: 650;
+  border: 1.5px solid color-mix(in srgb, var(--c) 45%, #fff);
+  color: color-mix(in srgb, var(--c) 85%, #000);
+  background: #fff;
+}

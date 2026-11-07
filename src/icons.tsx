@@ -1,18 +1,25 @@
 import type { ComponentType, ReactNode, SVGProps } from 'react';
 import {
   Binoculars,
+  Amphora,
   Bridge,
+  Candy,
   Building2,
   CableCar,
   Castle,
   Church,
   Drama,
+  Droplets,
   FerrisWheel,
   Fish,
   FlaskConical,
+  Flame,
   Flower2,
+  Footprints,
+  Gift,
   Landmark,
   Music,
+  Nut,
   Library,
   MountainSnow,
   Orbit,
@@ -26,7 +33,9 @@ import {
   TreePalm,
   Utensils,
   Waves,
+  WandSparkles,
   WavesLadder,
+  Wine,
   Shapes,
 } from 'lucide-react';
 import type { IconId } from './types';
@@ -283,6 +292,15 @@ const ICONS: Record<IconId, ComponentType<IconProps>> = {
   cablecar: CableCar,
   skyscraper: Skyscraper,
   modern: Building2,
+  wine: Wine,
+  gift: Gift,
+  candle: Flame,
+  sweets: Candy,
+  nuts: Nut,
+  soap: Droplets,
+  magic: WandSparkles,
+  ceramics: Amphora,
+  shoes: Footprints,
 };
 
 export function PlaceIcon({ icon, ...rest }: IconProps & { icon: IconId }) {

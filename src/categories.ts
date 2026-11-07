@@ -1,4 +1,4 @@
-import type { CategoryId, IconId, Tier } from './types';
+import type { CategoryId, IconId, TagId, Tier } from './types';
 
 export interface CategoryMeta {
   id: CategoryId;
@@ -16,6 +16,7 @@ export const CATEGORIES: CategoryMeta[] = [
   { id: 'nature', label: 'Parks & Water', color: '#3A8550', icon: 'park' },
   { id: 'neighborhoods', label: 'Neighborhoods', color: '#C24A75', icon: 'houses' },
   { id: 'food', label: 'Food & Markets', color: '#D0661F', icon: 'food' },
+  { id: 'shopping', label: 'Shopping', color: '#8B5E3C', icon: 'gift' },
   { id: 'fun', label: 'Fun & Family', color: '#2E7DC2', icon: 'ferris' },
 ];
 
@@ -23,6 +24,21 @@ export const CATEGORY_BY_ID = Object.fromEntries(CATEGORIES.map((c) => [c.id, c]
   CategoryId,
   CategoryMeta
 >;
+
+export interface TagMeta {
+  id: TagId;
+  label: string;
+  color: string;
+  icon: IconId;
+}
+
+/** Specific interests that overlap the categories above. */
+export const TAGS: TagMeta[] = [
+  { id: 'tapas', label: 'Tapas', color: '#B8432F', icon: 'wine' },
+  { id: 'souvenirs', label: 'Souvenir shops', color: '#8B5E3C', icon: 'gift' },
+];
+
+export const TAG_BY_ID = Object.fromEntries(TAGS.map((t) => [t.id, t])) as Record<TagId, TagMeta>;
 
 export interface TierMeta {
   tier: Tier;

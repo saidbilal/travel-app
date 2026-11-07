@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { List, LocateFixed, Locate, Maximize } from 'lucide-react';
-import type { CategoryId, Tier } from './types';
-import { CATEGORIES } from './categories';
+import type { CategoryId, Place, TagId, Tier } from './types';
+import { CATEGORIES, TAGS } from './categories';
 import { CITIES, CITY_BY_ID } from './cities';
 import { MapView, type MapViewHandle } from './components/MapView';
 import { TopBar } from './components/TopBar';
@@ -19,6 +19,8 @@ type Sheet = 'none' | 'list' | 'filters' | 'city';
 const isTierArray = (v: unknown): v is Tier[] => Array.isArray(v) && v.every((x) => x === 1 || x === 2 || x === 3);
 const CAT_IDS = new Set(CATEGORIES.map((c) => c.id));
 const isCatArray = (v: unknown): v is CategoryId[] => Array.isArray(v) && v.every((x) => CAT_IDS.has(x));
+const TAG_IDS = new Set<string>(TAGS.map((t) => t.id));
+const isTagArray = (v: unknown): v is TagId[] => Array.isArray(v) && v.every((x) => TAG_IDS.has(x));
 const isCityId = (v: unknown): v is string => typeof v === 'string' && v in CITY_BY_ID;
 
 /** Device-specific steps for turning location back on, since the browser won't ask again once blocked. */
@@ -46,6 +48,7 @@ export default function App() {
   // Empty selection = show everything.
   const [tiers, setTiers] = usePersistentState<Tier[]>('ta.tiers', [], isTierArray);
   const [cats, setCats] = usePersistentState<CategoryId[]>('ta.categories', [], isCatArray);
+  const [tags, setTags] = usePersistentState<TagId[]>('ta.tags', [], isTagArray);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [sheet, setSheet] = useState<Sheet>('none');
   const [toast, setToast] = useState<string | null>(null);
@@ -56,10 +59,20 @@ export default function App() {
   const wantCenterOnUser = useRef(false);
 
   // ── Filtering ──
-  const byCategory = useMemo(
-    () => city.places.filter((p) => cats.length === 0 || cats.includes(p.category)),
-    [city, cats],
+  // Only offer tags this city actually has places for.
+  const cityTags = useMemo(() => TAGS.filter((t) => city.places.some((p) => p.tags?.includes(t.id))), [city]);
+  // A remembered tag the current city has no places for is ignored (e.g. Tapas in Copenhagen).
+  const activeTags = useMemo(() => tags.filter((t) => cityTags.some((c) => c.id === t)), [tags, cityTags]);
+
+  // Interests = categories + tags; a place shows if it matches ANY chosen interest.
+  const matchesInterests = useCallback(
+    (p: Place) =>
+      (cats.length === 0 && activeTags.length === 0) ||
+      cats.includes(p.category) ||
+      !!p.tags?.some((t) => activeTags.includes(t)),
+    [cats, activeTags],
   );
+  const byCategory = useMemo(() => city.places.filter(matchesInterests), [city, matchesInterests]);
   const visible = useMemo(
     () => byCategory.filter((p) => tiers.length === 0 || tiers.includes(p.tier)),
     [byCategory, tiers],
@@ -72,6 +85,13 @@ export default function App() {
   const catCounts = useMemo(() => {
     const c = Object.fromEntries(CATEGORIES.map((x) => [x.id, 0])) as Record<CategoryId, number>;
     city.places.filter((p) => tiers.length === 0 || tiers.includes(p.tier)).forEach((p) => c[p.category]++);
+    return c;
+  }, [city, tiers]);
+  const tagCounts = useMemo(() => {
+    const c = Object.fromEntries(TAGS.map((x) => [x.id, 0])) as Record<TagId, number>;
+    city.places
+      .filter((p) => tiers.length === 0 || tiers.includes(p.tier))
+      .forEach((p) => p.tags?.forEach((t) => c[t]++));
     return c;
   }, [city, tiers]);
 
@@ -92,6 +112,8 @@ export default function App() {
       const next = cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id];
       return next.length === CATEGORIES.length ? [] : next;
     });
+  const toggleTag = (id: TagId) =>
+    setTags((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
 
   // The first-run tip goes away by itself after a while.
   useEffect(() => {
@@ -181,7 +203,7 @@ export default function App() {
         tierCounts={tierCounts}
         onToggleTier={toggleTier}
         onAllTiers={() => setTiers([])}
-        categoryFilterCount={cats.length}
+        categoryFilterCount={cats.length + activeTags.length}
         onOpenFilters={() => setSheet('filters')}
         onOpenCities={() => setSheet('city')}
       />
@@ -249,7 +271,14 @@ export default function App() {
           selected={cats}
           counts={catCounts}
           onToggle={toggleCat}
-          onClear={() => setCats([])}
+          tags={cityTags}
+          selectedTags={activeTags}
+          tagCounts={tagCounts}
+          onToggleTag={toggleTag}
+          onClear={() => {
+            setCats([]);
+            setTags([]);
+          }}
           onDone={closeSheet}
           resultCount={visible.length}
         />
