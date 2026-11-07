@@ -21,6 +21,19 @@ const CAT_IDS = new Set(CATEGORIES.map((c) => c.id));
 const isCatArray = (v: unknown): v is CategoryId[] => Array.isArray(v) && v.every((x) => CAT_IDS.has(x));
 const isCityId = (v: unknown): v is string => typeof v === 'string' && v in CITY_BY_ID;
 
+/** Device-specific steps for turning location back on, since the browser won't ask again once blocked. */
+function locationHelp() {
+  const ua = navigator.userAgent;
+  const iOS = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  if (iOS) {
+    return 'Location is blocked. On iPhone: Settings › Privacy & Security › Location Services (on) › Safari Websites › While Using the App. Then reload this page and tap the locate button again.';
+  }
+  if (/Android/.test(ua)) {
+    return 'Location is blocked. Tap the icon left of the address bar › Permissions › Location › Allow, and make sure phone Location is on. Then tap the locate button again.';
+  }
+  return 'Location is blocked. Allow it for this site in your browser’s settings, then tap the locate button again.';
+}
+
 export default function App() {
   // Key bumped when the default city changed (Copenhagen → Barcelona) so everyone starts on the new default once.
   const [cityId, setCityId] = usePersistentState('ta.city.v2', CITIES[0].id, isCityId);
@@ -90,7 +103,8 @@ export default function App() {
   // ── Toasts ──
   useEffect(() => {
     if (!toast) return;
-    const t = setTimeout(() => setToast(null), 4200);
+    // Longer messages (like how to turn location on) stay up long enough to read.
+    const t = setTimeout(() => setToast(null), Math.max(4200, toast.length * 60));
     return () => clearTimeout(t);
   }, [toast]);
 
@@ -122,7 +136,7 @@ export default function App() {
   }, [geo.position, centerOnUser]);
 
   useEffect(() => {
-    if (geo.status === 'denied') setToast('Location access is blocked. Allow it in your browser settings to see where you are.');
+    if (geo.status === 'denied') setToast(locationHelp());
     if (geo.status === 'unavailable') setToast('Couldn’t get your location right now.');
   }, [geo.status]);
 
@@ -257,7 +271,7 @@ export default function App() {
         <div className="scrim" onClick={closeSheet} aria-hidden />
       )}
 
-      <div className={`toast ${toast ? 'is-on' : ''}`} role="status" aria-live="polite">
+      <div className={`toast ${toast ? 'is-on' : ''}`} role="status" aria-live="polite" onClick={() => setToast(null)}>
         {toast}
       </div>
     </div>

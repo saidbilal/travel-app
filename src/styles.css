@@ -1033,6 +1033,7 @@ h3 {
 }
 
 .toast.is-on {
+  pointer-events: auto; /* tap to dismiss */
   opacity: 1;
   transform: translate(-50%, 0);
 }
