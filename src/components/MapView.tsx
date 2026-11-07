@@ -81,7 +81,9 @@ function overviewPadding(): Pad {
 export const MapView = forwardRef<MapViewHandle, Props>(function MapView({ city, places, selectedId, onSelect, userPosition }, ref) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MLMap | null>(null);
-  const [loaded, setLoaded] = useState(false);
+  // The map instance that has finished loading. Compared against mapRef so that, right after a
+  // city switch, effects never touch the brand-new map before its sources exist.
+  const [readyMap, setReadyMap] = useState<MLMap | null>(null);
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
   const onSelectRef = useRef(onSelect);
   onSelectRef.current = onSelect;
@@ -248,8 +250,12 @@ export const MapView = forwardRef<MapViewHandle, Props>(function MapView({ city,
       );
       placeLayer('places-selected', null);
 
-      await ensureMarkerImages(map, city.places);
-      setLoaded(true);
+      try {
+        await ensureMarkerImages(map, city.places);
+      } catch {
+        return; // the map was removed (city switched) while images were being drawn
+      }
+      if (mapRef.current === map) setReadyMap(map);
     });
 
     return () => {
@@ -257,7 +263,7 @@ export const MapView = forwardRef<MapViewHandle, Props>(function MapView({ city,
       userMarkerRef.current = null;
       map.remove();
       mapRef.current = null;
-      setLoaded(false);
+      setReadyMap(null);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [city]);
@@ -265,7 +271,7 @@ export const MapView = forwardRef<MapViewHandle, Props>(function MapView({ city,
   // ── Sync landmarks with the filtered list ──
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !loaded) return;
+    if (!map || readyMap !== map) return;
     (map.getSource('places') as GeoJSONSource).setData({
       type: 'FeatureCollection',
       features: places.map((p) => ({
@@ -288,12 +294,12 @@ export const MapView = forwardRef<MapViewHandle, Props>(function MapView({ city,
       places.forEach((p) => b.extend([p.lng, p.lat]));
       map.fitBounds(b, { padding: overviewPadding(), maxZoom: 15.5, duration: 700 });
     }
-  }, [places, loaded]);
+  }, [places, readyMap]);
 
   // ── Highlight + focus the selected place ──
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !loaded) return;
+    if (!map || readyMap !== map) return;
     const sel = selectedId ?? '';
     for (const t of [1, 2, 3] as Tier[]) {
       map.setFilter(`places-${t}`, ['all', ['==', ['get', 'tier'], t], ['!=', ['get', 'id'], sel]]);
@@ -304,12 +310,12 @@ export const MapView = forwardRef<MapViewHandle, Props>(function MapView({ city,
     const p = placesRef.current.find((x) => x.id === selectedId);
     if (!p) return;
     map.easeTo({ center: [p.lng, p.lat], zoom: Math.max(map.getZoom(), 14.5), offset: paddingToOffset(focusPadding()), duration: 650 });
-  }, [selectedId, loaded]);
+  }, [selectedId, readyMap]);
 
   // ── "You are here" ──
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !loaded) return;
+    if (!map || readyMap !== map) return;
     const src = map.getSource('user-accuracy') as GeoJSONSource | undefined;
     if (!userPosition) {
       userMarkerRef.current?.remove();
@@ -336,7 +342,7 @@ export const MapView = forwardRef<MapViewHandle, Props>(function MapView({ city,
       properties: {},
       geometry: circlePolygon(userPosition.lng, userPosition.lat, Math.min(userPosition.accuracy, 2000)),
     });
-  }, [userPosition, loaded]);
+  }, [userPosition, readyMap]);
 
   useImperativeHandle(
     ref,

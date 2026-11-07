@@ -22,8 +22,13 @@ const isCatArray = (v: unknown): v is CategoryId[] => Array.isArray(v) && v.ever
 const isCityId = (v: unknown): v is string => typeof v === 'string' && v in CITY_BY_ID;
 
 export default function App() {
-  const [cityId, setCityId] = usePersistentState('ta.city', CITIES[0].id, isCityId);
+  // Key bumped when the default city changed (Copenhagen → Barcelona) so everyone starts on the new default once.
+  const [cityId, setCityId] = usePersistentState('ta.city.v2', CITIES[0].id, isCityId);
   const city = CITY_BY_ID[cityId] ?? CITIES[0];
+
+  useEffect(() => {
+    document.title = `City Sights · ${city.name}`;
+  }, [city]);
 
   // Empty selection = show everything.
   const [tiers, setTiers] = usePersistentState<Tier[]>('ta.tiers', [], isTierArray);

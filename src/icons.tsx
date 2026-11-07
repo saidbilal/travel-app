@@ -1,6 +1,9 @@
 import type { ComponentType, ReactNode, SVGProps } from 'react';
 import {
+  Binoculars,
   Bridge,
+  Building2,
+  CableCar,
   Castle,
   Church,
   Drama,
@@ -9,6 +12,7 @@ import {
   FlaskConical,
   Flower2,
   Landmark,
+  Music,
   Library,
   MountainSnow,
   Orbit,
@@ -187,6 +191,52 @@ const Gate = makeIcon(
   </>,
 );
 
+const Basilica = makeIcon(
+  <>
+    {/* Cluster of spires, the tallest in the middle with a cross */}
+    <path d="M2 21h20" />
+    <path d="M3.5 21v-8l1.5-4.5L6.5 13v8" />
+    <path d="M6.5 21V10l1.75-5L10 10v11" />
+    <path d="M10 21V8.5l2-5.5 2 5.5V21" />
+    <path d="M14 21V10l1.75-5L17.5 10v11" />
+    <path d="M17.5 21v-8l1.5-4.5 1.5 4.5v8" />
+    <path d="M12 3V1M11 1.9h2" />
+    <path d="M11 21v-2.5a1 1 0 0 1 2 0V21" />
+  </>,
+);
+
+const Gaudi = makeIcon(
+  <>
+    {/* House with a wavy, dragon-back roof and round windows */}
+    <path d="M2 21h20" />
+    <path d="M4 21V9.5c1.3-1.8 2.7-2.7 4-2.7 1.6 0 2.4 1.4 4 1.4s2.4-2.7 4.3-2.7c1.4 0 2.6 1 3.7 2.8V21" />
+    <circle cx="8" cy="12.5" r="1.3" />
+    <circle cx="12" cy="12.5" r="1.3" />
+    <circle cx="16" cy="12.5" r="1.3" />
+    <path d="M7 17h2M15 17h2" />
+    <path d="M11 21v-3.5a1 1 0 0 1 2 0V21" />
+  </>,
+);
+
+const Stadium = makeIcon(
+  <>
+    <ellipse cx="12" cy="14" rx="9.5" ry="6.5" />
+    <ellipse cx="12" cy="14" rx="5" ry="3" />
+    <path d="M12 11v6" />
+    <path d="M3.5 9.5V4M20.5 9.5V4" />
+    <path d="M2.5 4h2M19.5 4h2" />
+  </>,
+);
+
+const Skyscraper = makeIcon(
+  <>
+    {/* Bullet-shaped tower */}
+    <path d="M7.5 21V10.5C7.5 6 9.5 2.5 12 2.5s4.5 3.5 4.5 8V21" />
+    <path d="M5 21h14" />
+    <path d="M10 9h4M9.5 12.5h5M9.5 16h5" />
+  </>,
+);
+
 const ICONS: Record<IconId, ComponentType<IconProps>> = {
   castle: Castle,
   palace: Palace,
@@ -225,6 +275,14 @@ const ICONS: Record<IconId, ComponentType<IconProps>> = {
   gate: Gate,
   science: FlaskConical,
   urban: Shapes,
+  basilica: Basilica,
+  gaudi: Gaudi,
+  stadium: Stadium,
+  viewpoint: Binoculars,
+  music: Music,
+  cablecar: CableCar,
+  skyscraper: Skyscraper,
+  modern: Building2,
 };
 
 export function PlaceIcon({ icon, ...rest }: IconProps & { icon: IconId }) {

@@ -51,7 +51,15 @@ export type IconId =
   | 'ferris'
   | 'gate'
   | 'science'
-  | 'urban';
+  | 'urban'
+  | 'basilica'
+  | 'gaudi'
+  | 'stadium'
+  | 'viewpoint'
+  | 'music'
+  | 'cablecar'
+  | 'skyscraper'
+  | 'modern';
 
 export type Cost = 'free' | 'paid' | 'mixed';
 

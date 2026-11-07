@@ -12,7 +12,7 @@ export const CATEGORIES: CategoryMeta[] = [
   { id: 'museums', label: 'Museums & Art', color: '#C4513A', icon: 'museum' },
   { id: 'churches', label: 'Churches', color: '#4A6A93', icon: 'church' },
   { id: 'landmarks', label: 'Landmarks', color: '#A8751A', icon: 'statue' },
-  { id: 'architecture', label: 'Modern Architecture', color: '#23807E', icon: 'opera' },
+  { id: 'architecture', label: 'Architecture', color: '#23807E', icon: 'opera' },
   { id: 'nature', label: 'Parks & Water', color: '#3A8550', icon: 'park' },
   { id: 'neighborhoods', label: 'Neighborhoods', color: '#C24A75', icon: 'houses' },
   { id: 'food', label: 'Food & Markets', color: '#D0661F', icon: 'food' },

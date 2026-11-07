@@ -4,7 +4,8 @@ A mobile-first sightseeing map. Pick a city and see its landmarks drawn as icons
 on a clean "silhouette" map of the city, sized by how much a first-time visitor
 should prioritise them.
 
-Currently includes **Copenhagen** (60 places).
+Currently includes **Barcelona** (56 places, the default) and **Copenhagen**
+(60 places). Switch cities from the city name at the top.
 
 ## Features
 
@@ -18,7 +19,7 @@ Currently includes **Copenhagen** (60 places).
   labels compete for space.
 - **Rank filter**: All, any single rank, or any combination (chips at the top).
 - **Interests filter**: castles & palaces, museums & art, churches, landmarks,
-  modern architecture, parks & water, neighbourhoods, food & markets, fun & family.
+  architecture, parks & water, neighbourhoods, food & markets, fun & family.
 - **Place details**: photo (from Wikipedia), description, local tip, typical
   visit time, free/ticketed, and distance + walking time from you.
 - **Directions**: one tap opens Google Maps (the app on phones) with directions
@@ -53,7 +54,8 @@ Source: GitHub Actions**. The site will be at
    `node scripts/build-boundary.mjs "Municipality name" src/cities/<id>/boundary.json`
 2. Create `src/cities/<id>/index.ts` with the city's bounds and places
    (see `src/cities/copenhagen/index.ts`).
-3. Add it to `CITIES` in `src/cities/index.ts`.
+3. Add it to `CITIES` in `src/cities/index.ts`. The first entry is the city
+   shown on a first visit; after that the app remembers the last city chosen.
 
 ## Data & credits
 
